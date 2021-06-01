@@ -26,7 +26,7 @@ namespace Locacion.Server
         {
             services.AddDbContext<dbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Conn")));
-
+      
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
