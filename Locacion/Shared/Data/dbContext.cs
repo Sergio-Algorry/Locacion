@@ -7,7 +7,6 @@ namespace Locacion.Comunes.Data
     public class dbContext : DbContext
     {
         public DbSet<Pais> Paises { get; set; }
-
         public DbSet<Provincia> Provincias { get; set; }
 
         public dbContext(DbContextOptions<dbContext> options) 

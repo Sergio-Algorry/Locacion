@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 using System.Linq;
 
 namespace Locacion.Server
@@ -26,7 +27,12 @@ namespace Locacion.Server
         {
             services.AddDbContext<dbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("Conn")));
-      
+
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Locacion", Version = "v1" });
+            });
+
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
@@ -36,6 +42,10 @@ namespace Locacion.Server
         {
             if (env.IsDevelopment())
             {
+                app.UseSwagger();
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", 
+                    "Locacion v1"));
+
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
