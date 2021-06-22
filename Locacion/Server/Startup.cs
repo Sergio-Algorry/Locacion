@@ -9,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using System.Linq;
+using System.Text.Json.Serialization;
 
 namespace Locacion.Server
 {
@@ -33,7 +34,23 @@ namespace Locacion.Server
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Locacion", Version = "v1" });
             });
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews().AddJsonOptions(x =>
+                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+
+            //.NET 6.xx
+            //services.AddControllersWithViews().AddJsonOptions(x =>
+            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
+
+            //Install - Package Microsoft.AspNetCore.Mvc.NewtonsoftJson - Version 3.x.x
+            //agrega la siguiente configuración:
+            //services.AddControllersWithViews().AddNewtonsoftJson(options => 
+            //    options.SerializerSettings.ReferenceLoopHandling 
+            //    = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+
+
+
+
             services.AddRazorPages();
         }
 

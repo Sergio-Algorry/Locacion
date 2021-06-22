@@ -1,6 +1,7 @@
 ﻿using Locacion.Comunes.Data;
 using Locacion.Comunes.Data.Entidades;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,15 +23,13 @@ namespace Locacion.Server.Controllers
         [HttpGet]
         public ActionResult<List<Pais>> Get()
         {
-            // Select * from Paises ----- SQL
-            return context.Paises.ToList();
+            return context.Paises.Include(x => x.Provincias).ToList();
         }
 
         [HttpGet("{id:int}")]
         public ActionResult<Pais> Get(int id)
         {
-            // Select * from Paises Where Id = id ----- SQL
-            var pais = context.Paises.Where(x => x.Id == id).FirstOrDefault();
+            var pais = context.Paises.Where(x => x.Id == id).Include(x => x.Provincias).FirstOrDefault();
             if (pais==null)
             {
                 return NotFound($"No existe el pais con id igual a {id}.");
