@@ -1,4 +1,4 @@
-﻿using Locacion.Shared;
+﻿using Locacion.Comunes;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;

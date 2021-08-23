@@ -37,20 +37,7 @@ namespace Locacion.Server
             services.AddControllersWithViews().AddJsonOptions(x =>
                 x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
 
-            //.NET 6.xx
-            //services.AddControllersWithViews().AddJsonOptions(x =>
-            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles);
-
-            //Install - Package Microsoft.AspNetCore.Mvc.NewtonsoftJson - Version 3.x.x
-            //agrega la siguiente configuración:
-            //services.AddControllersWithViews().AddNewtonsoftJson(options => 
-            //    options.SerializerSettings.ReferenceLoopHandling 
-            //    = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
-
-
-
-
-
+            services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
@@ -59,10 +46,6 @@ namespace Locacion.Server
         {
             if (env.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", 
-                    "Locacion v1"));
-
                 app.UseDeveloperExceptionPage();
                 app.UseWebAssemblyDebugging();
             }
@@ -72,6 +55,10 @@ namespace Locacion.Server
                 // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json",
+                "Locacion v1"));
 
             app.UseHttpsRedirection();
             app.UseBlazorFrameworkFiles();
