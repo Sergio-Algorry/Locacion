@@ -1,0 +1,70 @@
+﻿@page "/paises"
+<h3>Paises</h3>
+<br />
+<button @onclick="()=>Nuevo=true">Nuevo</button>
+<br />
+<table>
+    <tr>
+        <th>Código</th>
+        <th>Nombre</th>
+    </tr>
+    @if (paises == null)
+    {
+        <tr>Cargando.....</tr>
+    }
+    else if (paises.Count == 0)
+    {
+        <tr>No existen paises</tr>
+    }
+    else
+    {
+        @foreach (var item in paises)
+        {
+            <tr>
+                <td>@item.CodPais</td>
+                <td>@item.NombrePais</td>
+            </tr>
+        }
+    }
+</table>
+
+@if (Nuevo)
+{
+    <br />
+    <br />
+    <input placeholder="Código de País" @bind="codPais" />
+    <input placeholder="Nombre de País" @bind="nomPais" />
+    <button @onclick="AddPais">Add</button>
+}
+
+
+
+@code {
+    //List<Pais> paises = new List<Pais>();
+    List<Pais> paises;
+    string codPais = "";
+    string nomPais = "";
+    bool Nuevo = false;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+
+        paises = new()
+        {
+            new Pais() { CodPais = "ar", NombrePais = "Argentina" },
+            new Pais() { CodPais = "es", NombrePais = "España" }
+        };
+    }
+
+    private void AddPais()
+    {
+        Pais pais = new();
+        pais.CodPais = codPais;
+        pais.NombrePais = nomPais;
+        paises.Add(pais);
+        codPais = "";
+        nomPais = "";
+        Nuevo = false;
+    }
+}
