@@ -1,7 +1,7 @@
 ﻿@page "/paises"
-<h3>Paises</h3>
+<h2>Paises</h2>
 <br />
-<button @onclick="()=>Nuevo=true">Nuevo</button>
+<button class="btn btn-success" @onclick="()=>nuevo=true">Nuevo</button>
 <br />
 <table>
     <tr>
@@ -23,20 +23,50 @@
             <tr>
                 <td>@item.CodPais</td>
                 <td>@item.NombrePais</td>
+                <td><button class="btn btn-success" @onclick="()=>Editar(item)">Editar</button></td>
+                <td><button class="btn btn-warning" @onclick="()=>Eliminar(item)">Eliminar</button></td>
             </tr>
         }
     }
 </table>
 
-@if (Nuevo)
+@if (nuevo)
 {
+    @if (editar || eliminar)
+    {
+        Cancelar();
+        nuevo = true;
+    }
     <br />
+    <h3>Nuevo País</h3>
     <br />
     <input placeholder="Código de País" @bind="codPais" />
     <input placeholder="Nombre de País" @bind="nomPais" />
-    <button @onclick="AddPais">Add</button>
+    <button class="btn btn-success" @onclick="GrabarNuevo">Grabar</button>
+    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
 }
 
+@if (editar)
+{
+    <br />
+    <h3>Editar País</h3>
+    <br />
+    <input placeholder="Código de País" @bind="codPais" />
+    <input placeholder="Nombre de País" @bind="nomPais" />
+    <button class="btn btn-success" @onclick="GrabarEditar">Grabar</button>
+    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
+}
+
+@if (eliminar)
+{
+    <br />
+    <h3>Eliminar País</h3>
+    <br />
+    <input placeholder="Código de País" @bind="codPais" />
+    <input placeholder="Nombre de País" @bind="nomPais" />
+    <button class="btn btn-success" @onclick="GrabarEliminar">Eliminar</button>
+    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
+}
 
 
 @code {
@@ -44,7 +74,10 @@
     List<Pais> paises;
     string codPais = "";
     string nomPais = "";
-    bool Nuevo = false;
+    bool nuevo = false;
+    bool editar = false;
+    bool eliminar = false;
+    Pais editarPais;
 
     protected override void OnInitialized()
     {
@@ -57,14 +90,63 @@
         };
     }
 
-    private void AddPais()
+    private void GrabarNuevo()
     {
         Pais pais = new();
         pais.CodPais = codPais;
         pais.NombrePais = nomPais;
         paises.Add(pais);
+        Cancelar();
+    }
+
+    private void Editar(Pais paisEditar)
+    {
+        if (nuevo || eliminar)
+        {
+            Cancelar();
+            editar = true;
+        }
+        editar = true;
+        codPais = paisEditar.CodPais;
+        nomPais = paisEditar.NombrePais;
+        editarPais = paisEditar;
+    }
+
+    private void GrabarEditar()
+    {
+        paises.Remove(editarPais);
+        paises.Add(new Pais() { CodPais = codPais, NombrePais = nomPais });
+        Cancelar();
+    }
+
+    private void Eliminar(Pais paisEliminar)
+    {
+        if (nuevo || editar)
+        {
+            Cancelar();
+            eliminar = true;
+        }
+        eliminar = true;
+        codPais = paisEliminar.CodPais;
+        nomPais = paisEliminar.NombrePais;
+        editarPais = paisEliminar;
+    }
+
+
+    private void GrabarEliminar()
+    {
+        paises.Remove(editarPais);
+        Cancelar();
+    }
+
+    private void Cancelar()
+    {
+        editarPais = null;
+        nuevo = false;
+        editar = false;
+        eliminar = false;
         codPais = "";
         nomPais = "";
-        Nuevo = false;
     }
+
 }
