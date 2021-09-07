@@ -1,0 +1,22 @@
+﻿<EditForm Model="Pais" OnValidSubmit="onValidSubmit">
+    <div class="form-group">
+        <label>Código</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Pais.CodPais" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label>Nombre del país</label>
+        <div>
+            <InputText class="form-control" @bind-Value="@Pais.NombrePais" />
+        </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Guardar</button>
+    <button class="btn btn-secondary" @onclick="onCancel" type="button">Cancelar</button>
+</EditForm>
+
+@code {
+    [Parameter] public Pais Pais { get; set; }
+    [Parameter] public EventCallback onValidSubmit { get; set; }
+    [Parameter] public EventCallback onCancel { get; set; }
+}

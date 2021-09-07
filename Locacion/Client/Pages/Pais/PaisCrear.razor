@@ -1,0 +1,21 @@
+﻿@page "/paises/crear"
+@inject NavigationManager navigationManager 
+<h2>Nuevo País</h2>
+
+<PaisFormulario onValidSubmit="GrabarNuevo" Pais="pais" onCancel="Cancelar"/>
+
+@code {
+    private Pais pais = new();
+
+    private async Task GrabarNuevo()
+    {
+        Console.WriteLine($"Graba {pais.NombrePais}");
+        navigationManager.NavigateTo("/paises");
+    }
+
+    private async Task Cancelar()
+    {
+        navigationManager.NavigateTo("/paises");
+    }
+
+}

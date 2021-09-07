@@ -1,7 +1,7 @@
 ﻿@page "/paises"
 <h2>Paises</h2>
 <br />
-<button class="btn btn-success" @onclick="()=>nuevo=true">Nuevo</button>
+<a class="btn btn-success" href="paises/crear">Nuevo</a>
 <br />
 <table>
     <tr>
@@ -23,14 +23,15 @@
             <tr>
                 <td>@item.CodPais</td>
                 <td>@item.NombrePais</td>
-                <td><button class="btn btn-success" @onclick="()=>Editar(item)">Editar</button></td>
+                <td><a class="btn btn-success" 
+                       href="paises/editar/@item.Id/@item.CodPais/@item.NombrePais">Editar</a></td>
                 <td><button class="btn btn-warning" @onclick="()=>Eliminar(item)">Eliminar</button></td>
             </tr>
         }
     }
 </table>
 
-@if (nuevo)
+@*@if (nuevo)
 {
     @if (editar || eliminar)
     {
@@ -44,7 +45,7 @@
     <input placeholder="Nombre de País" @bind="nomPais" />
     <button class="btn btn-success" @onclick="GrabarNuevo">Grabar</button>
     <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
-}
+}*@
 
 @if (editar)
 {
@@ -71,13 +72,13 @@
 
 @code {
     //List<Pais> paises = new List<Pais>();
-    List<Pais> paises;
+    List<Locacion.Comunes.Data.Entidades.Pais> paises;
     string codPais = "";
     string nomPais = "";
     bool nuevo = false;
     bool editar = false;
     bool eliminar = false;
-    Pais editarPais;
+    Locacion.Comunes.Data.Entidades.Pais editarPais;
 
     protected override void OnInitialized()
     {
@@ -85,21 +86,14 @@
 
         paises = new()
         {
-            new Pais() { CodPais = "ar", NombrePais = "Argentina" },
-            new Pais() { CodPais = "es", NombrePais = "España" }
+            new Locacion.Comunes.Data.Entidades.Pais()
+            { CodPais = "ar", NombrePais = "Argentina" },
+            new Locacion.Comunes.Data.Entidades.Pais()
+            { CodPais = "es", NombrePais = "España" }
         };
     }
 
-    private void GrabarNuevo()
-    {
-        Pais pais = new();
-        pais.CodPais = codPais;
-        pais.NombrePais = nomPais;
-        paises.Add(pais);
-        Cancelar();
-    }
-
-    private void Editar(Pais paisEditar)
+    private void Editar(Locacion.Comunes.Data.Entidades.Pais paisEditar)
     {
         if (nuevo || eliminar)
         {
@@ -115,11 +109,11 @@
     private void GrabarEditar()
     {
         paises.Remove(editarPais);
-        paises.Add(new Pais() { CodPais = codPais, NombrePais = nomPais });
+        paises.Add(new Locacion.Comunes.Data.Entidades.Pais() { CodPais = codPais, NombrePais = nomPais });
         Cancelar();
     }
 
-    private void Eliminar(Pais paisEliminar)
+    private void Eliminar(Locacion.Comunes.Data.Entidades.Pais paisEliminar)
     {
         if (nuevo || editar)
         {
