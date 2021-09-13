@@ -24,61 +24,30 @@
                 <td>@item.CodPais</td>
                 <td>@item.NombrePais</td>
                 <td><a class="btn btn-success" 
-                       href="paises/editar/@item.Id/@item.CodPais/@item.NombrePais">Editar</a></td>
+                       href="paises/editar/@item.Id/@item.CodPais/@item.NombrePais">
+                    Editar
+                    </a>
+                </td>
                 <td><button class="btn btn-warning" @onclick="()=>Eliminar(item)">Eliminar</button></td>
             </tr>
         }
     }
 </table>
 
-@*@if (nuevo)
-{
-    @if (editar || eliminar)
-    {
-        Cancelar();
-        nuevo = true;
-    }
-    <br />
-    <h3>Nuevo País</h3>
-    <br />
-    <input placeholder="Código de País" @bind="codPais" />
-    <input placeholder="Nombre de País" @bind="nomPais" />
-    <button class="btn btn-success" @onclick="GrabarNuevo">Grabar</button>
-    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
-}*@
-
-@if (editar)
-{
-    <br />
-    <h3>Editar País</h3>
-    <br />
-    <input placeholder="Código de País" @bind="codPais" />
-    <input placeholder="Nombre de País" @bind="nomPais" />
-    <button class="btn btn-success" @onclick="GrabarEditar">Grabar</button>
-    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
-}
-
-@if (eliminar)
-{
-    <br />
-    <h3>Eliminar País</h3>
-    <br />
-    <input placeholder="Código de País" @bind="codPais" />
-    <input placeholder="Nombre de País" @bind="nomPais" />
-    <button class="btn btn-success" @onclick="GrabarEliminar">Eliminar</button>
-    <button class="btn btn-info" @onclick="Cancelar">Cancelar</button>
-}
+<Confirmacion  @ref="confirmacion" 
+              onConfirm="GrabarEliminar"
+              onCancel="Cancelar">
+    <h1>Titulo interno</h1>
+    <div>¿Desea eliminar el país?</div>
+</Confirmacion>
 
 
 @code {
-    //List<Pais> paises = new List<Pais>();
     List<Locacion.Comunes.Data.Entidades.Pais> paises;
+    Confirmacion confirmacion;
     string codPais = "";
     string nomPais = "";
-    bool nuevo = false;
-    bool editar = false;
-    bool eliminar = false;
-    Locacion.Comunes.Data.Entidades.Pais editarPais;
+    Locacion.Comunes.Data.Entidades.Pais eliminarPais;
 
     protected override void OnInitialized()
     {
@@ -93,54 +62,25 @@
         };
     }
 
-    private void Editar(Locacion.Comunes.Data.Entidades.Pais paisEditar)
-    {
-        if (nuevo || eliminar)
-        {
-            Cancelar();
-            editar = true;
-        }
-        editar = true;
-        codPais = paisEditar.CodPais;
-        nomPais = paisEditar.NombrePais;
-        editarPais = paisEditar;
-    }
-
-    private void GrabarEditar()
-    {
-        paises.Remove(editarPais);
-        paises.Add(new Locacion.Comunes.Data.Entidades.Pais() { CodPais = codPais, NombrePais = nomPais });
-        Cancelar();
-    }
-
     private void Eliminar(Locacion.Comunes.Data.Entidades.Pais paisEliminar)
     {
-        if (nuevo || editar)
-        {
-            Cancelar();
-            eliminar = true;
-        }
-        eliminar = true;
+        confirmacion.Mostrar();
         codPais = paisEliminar.CodPais;
         nomPais = paisEliminar.NombrePais;
-        editarPais = paisEliminar;
+        eliminarPais = paisEliminar;
     }
 
 
     private void GrabarEliminar()
     {
-        paises.Remove(editarPais);
+        paises.Remove(eliminarPais);
         Cancelar();
     }
 
     private void Cancelar()
     {
-        editarPais = null;
-        nuevo = false;
-        editar = false;
-        eliminar = false;
-        codPais = "";
-        nomPais = "";
+        confirmacion.Ocultar();
+        eliminarPais = null;
     }
 
 }
