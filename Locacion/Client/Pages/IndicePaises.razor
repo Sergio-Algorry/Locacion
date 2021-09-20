@@ -1,7 +1,7 @@
 ﻿@page "/paises"
 <h2>Paises</h2>
 <br />
-<a class="btn btn-success" href="paises/crear">Nuevo</a>
+<a class="btn btn-primary" href="paises/crear">Nuevo</a>
 <br />
 <table>
     <tr>
@@ -36,9 +36,12 @@
 
 <Confirmacion  @ref="confirmacion" 
               onConfirm="GrabarEliminar"
-              onCancel="Cancelar">
-    <h1>Titulo interno</h1>
-    <div>¿Desea eliminar el país?</div>
+              onCancel="Cancelar"
+              Titulo="BORRAR"
+              textCancelar="Salir"
+              textOk="Aceptar"
+              >
+    <div>¿Desea eliminar el país @eliminarPais.NombrePais?</div>
 </Confirmacion>
 
 
