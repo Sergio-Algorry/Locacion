@@ -1,4 +1,5 @@
 ﻿@page "/paises"
+@inject IHttpService http
 <h2>Paises</h2>
 <br />
 <a class="btn btn-primary" href="paises/crear">Nuevo</a>
@@ -46,30 +47,28 @@
 
 
 @code {
-    List<Locacion.Comunes.Data.Entidades.Pais> paises;
-    Confirmacion confirmacion;
-    string codPais = "";
-    string nomPais = "";
-    Locacion.Comunes.Data.Entidades.Pais eliminarPais;
+        List<Locacion.Comunes.Data.Entidades.Pais> paises;
+        Confirmacion confirmacion;
+        Locacion.Comunes.Data.Entidades.Pais eliminarPais;
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
         base.OnInitialized();
+        await Leer();
+    }
 
-        paises = new()
+    private async Task Leer()
+    {
+        var respuestaHttp = await http.Get<List<Locacion.Comunes.Data.Entidades.Pais>>("api/paises");
+        if (!respuestaHttp.Error)
         {
-            new Locacion.Comunes.Data.Entidades.Pais()
-            { CodPais = "ar", NombrePais = "Argentina" },
-            new Locacion.Comunes.Data.Entidades.Pais()
-            { CodPais = "es", NombrePais = "España" }
-        };
+            paises = respuestaHttp.Respuesta;
+        }
     }
 
     private void Eliminar(Locacion.Comunes.Data.Entidades.Pais paisEliminar)
     {
         confirmacion.Mostrar();
-        codPais = paisEliminar.CodPais;
-        nomPais = paisEliminar.NombrePais;
         eliminarPais = paisEliminar;
     }
 

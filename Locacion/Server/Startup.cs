@@ -34,8 +34,17 @@ namespace Locacion.Server
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Locacion", Version = "v1" });
             });
 
-            services.AddControllersWithViews().AddJsonOptions(x =>
-                x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            //.NET3.1
+            //Instala la librería: Microsoft.AspNetCore.Mvc.NewtonsoftJson
+            //services.AddControllers().AddNewtonsoftJson(x =>
+            //    x.SerializerSettings.ReferenceLoopHandling =
+            //    Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+            //.NET5
+            //services.AddControllersWithViews().AddJsonOptions(x =>
+            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve);
+            //.NET6
+            //services.AddControllersWithViews().AddJsonOptions(x => 
+            //    x.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles)
 
             services.AddControllersWithViews();
             services.AddRazorPages();

@@ -23,7 +23,8 @@ namespace Locacion.Server.Controllers
         [HttpGet]
         public async Task<ActionResult<List<Pais>>> Get()
         {
-            return await context.Paises.Include(x => x.Provincias).ToListAsync();
+            //return await context.Paises.Include(x => x.Provincias).ToListAsync();
+            return await context.Paises.ToListAsync();
         }
 
         [HttpGet("{id:int}")]
