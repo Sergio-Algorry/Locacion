@@ -25,7 +25,7 @@
                 <td>@item.CodPais</td>
                 <td>@item.NombrePais</td>
                 <td><a class="btn btn-success" 
-                       href="paises/editar/@item.Id/@item.CodPais/@item.NombrePais">
+                       href="paises/editar/@item.Id">
                     Editar
                     </a>
                 </td>
@@ -47,9 +47,9 @@
 
 
 @code {
-        List<Locacion.Comunes.Data.Entidades.Pais> paises;
-        Confirmacion confirmacion;
-        Locacion.Comunes.Data.Entidades.Pais eliminarPais;
+    List<Locacion.Comunes.Data.Entidades.Pais> paises;
+    Confirmacion confirmacion;
+    Locacion.Comunes.Data.Entidades.Pais eliminarPais;
 
     protected override async Task OnInitializedAsync()
     {
@@ -73,10 +73,15 @@
     }
 
 
-    private void GrabarEliminar()
+    private async Task GrabarEliminar()
     {
-        paises.Remove(eliminarPais);
+        var respuesta = await http.Delete($"api/paises/{eliminarPais.Id}");
+        if (respuesta.Error)
+        {
+            var body = await respuesta.GetBody();
+        }
         Cancelar();
+        await Leer();
     }
 
     private void Cancelar()
